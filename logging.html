@@ -1,0 +1,18 @@
+<html>
+<script>
+const onmidimessage = e => {
+  console.log("received: " + e.data);
+};
+navigator.requestMIDIAccess({'sysex': true}).then(a => {
+  a.onstatechange = e => {
+    console.log(e.port);
+    if (e.port.type == "input") {
+      e.port.onmidimessage = onmidimessage;
+    }
+  };
+  for (let input of a.inputs.values()) {
+    input.onmidimessage = onmidimessage;
+  }
+});
+</script>
+</html>
